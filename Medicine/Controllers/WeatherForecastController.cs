@@ -3,23 +3,29 @@ using Microsoft.AspNetCore.Mvc;
 namespace Medicine.Controllers;
 
 [ApiController]
-[Route("weatherforecast")]
+[Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
     {
-        "Issiq", "Sovuq", "Iliq", "Shamolli", "Yomg‘irli", "Qorli"
+        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-    [HttpGet]
+    private readonly ILogger<WeatherForecastController> _logger;
+
+    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    {
+        _logger = logger;
+    }
+
+    [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
-        var rng = new Random();
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
-            Date = DateOnly.Parse(DateTime.Now.AddDays(index).ToString()),
-            TemperatureC = rng.Next(-20, 45),
-            Summary = Summaries[rng.Next(Summaries.Length)]
+            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
     }
