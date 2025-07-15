@@ -20,10 +20,13 @@ public class Program
 
         if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
         {
-            app.UseSwagger();
+            app.UseSwagger(options =>
+            {
+                options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0;
+            });
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Medicine API v1");
+                options.SwaggerEndpoint("./v1/swagger.json", "Medicine API v1");
             });
         }
 
