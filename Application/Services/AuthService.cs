@@ -30,7 +30,7 @@ internal sealed class AuthService(
             user = new User
             {
                 Email = payload.Email,
-                FullName = payload.Name,
+                FullName = payload.Name ?? "Test",
                 GoogleId = payload.Subject,
                 ProfilePictureUrl = payload.Picture
             };
