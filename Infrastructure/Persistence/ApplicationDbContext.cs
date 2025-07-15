@@ -8,6 +8,8 @@ public class ApplicationDbContext : DbContext
 {
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+    public DbSet<Clinic> Clinics { get; set; } = null!;
+    public DbSet<WorkingHours> WorkingHours { get; set; } = null!;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -41,5 +43,4 @@ public class ApplicationDbContext : DbContext
 
         return base.SaveChangesAsync(cancellationToken);
     }
-
 }
