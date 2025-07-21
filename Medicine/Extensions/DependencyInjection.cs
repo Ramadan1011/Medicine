@@ -16,13 +16,27 @@ public static class DependencyInjection
         AddOptions(services, configuration);
         AddControllers(services);
         AddSwagger(services);
-        services.AddErrorHandlers();
+        AddCors(services);
+        AddErrorHandlers(services);
         AddAuthentication(services, configuration);
 
         return services;
     }
 
-    private static void AddErrorHandlers(this IServiceCollection services)
+    private static void AddCors(IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+        });
+    }
+
+    private static void AddErrorHandlers(IServiceCollection services)
     {
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
