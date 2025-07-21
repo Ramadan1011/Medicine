@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Auth;
+using Medicine.ExceptionHandlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -15,9 +16,16 @@ public static class DependencyInjection
         AddOptions(services, configuration);
         AddControllers(services);
         AddSwagger(services);
+        services.AddErrorHandlers();
         AddAuthentication(services, configuration);
 
         return services;
+    }
+
+    private static void AddErrorHandlers(this IServiceCollection services)
+    {
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
     }
 
     private static void AddOptions(IServiceCollection services, IConfiguration configuration)
