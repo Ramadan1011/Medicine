@@ -1,7 +1,9 @@
 
 using Application.Extensions;
 using Infrastructure.Extensions;
+using Infrastructure.Persistence;
 using Medicine.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Medicine;
 
@@ -17,6 +19,12 @@ public class Program
             .AddInfrastructure(builder.Configuration);
 
         var app = builder.Build();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            dbContext.Database.Migrate();
+        }
 
         if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
         {
